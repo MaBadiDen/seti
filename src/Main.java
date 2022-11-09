@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -8,13 +6,13 @@ public class Main {
 
     public static void main(String[] args) {
         List<Integer> nums = new ArrayList<>(List.of(4, 1, 1, 50, 2, 6, 3, 4, 8, 4, 5, 5, 6, 7));
-        List<String> words = new ArrayList<>(List.of("Mebel", "Dom", "Rabota", "Kotyata", "Mashina", "Mebel", "Mebel", "Rabota", "Rabota"));
+        List<String> words = new ArrayList<>(List.of( "Mebel", "Dom", "Rabota", "Kotyata","Mebel", "Mashina", "Mebel", "Mebel", "Mebel", "Rabota", "Rabota", "doch", "Mebel"));
         printOnlyOdd(nums);
         System.out.println();
         printOnlyEven(nums);
         System.out.println();
         printUniqueWords(words);
-        System.out.println(countDubles(words));
+        printNewDubles(words);
     }
 
     public static void printOnlyOdd(List<Integer> nums) {
@@ -52,17 +50,45 @@ public class Main {
         System.out.println(newWords);
     }
 
-    public static int countDubles(List<String> words) {
+    /*public static void printDubles(List<String> words) {
         String tmpWord;
-        int dubles = 0;
+        HashMap<String, Integer> dublesWords = new HashMap();
+        Set<String> duble = new HashSet<>();
         for (int i = 0; i < words.size(); i++) {
             tmpWord = words.get(i);
             words.remove(i);
             if(words.contains(tmpWord)) {
-               dubles++;
+                if(!duble.contains(tmpWord)){
+                    duble.add(tmpWord);
+                    words.add(tmpWord);
+                    dublesWords.put(tmpWord, 1);
+                } else {
+                    words.add(tmpWord);
+                    int tmp = dublesWords.get(tmpWord);
+                    dublesWords.remove(tmpWord);
+                    dublesWords.put(tmpWord, ++tmp);
+
+                }
+
             }
-            words.add(i, tmpWord);
+
         }
-        return dubles;
+    }*/
+
+    public static void printNewDubles(List<String> words) {
+        Collections.sort(words);
+        int dubles = 1;
+        HashMap<String, Integer> dublesWords = new HashMap<>();
+        for (int i = words.size(); i > 1; i--) {
+            while(words.get(i - 1).equals(words.get(i - 2))){
+                dubles++;
+                i--;
+            }
+            if(dubles != 1) {
+                dublesWords.put(words.get(i - 1), dubles);
+            }
+            dubles = 1;
+        }
+        System.out.println(dublesWords);
     }
 }
